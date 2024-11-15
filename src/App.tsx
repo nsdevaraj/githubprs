@@ -18,9 +18,9 @@ function App() {
     setIsLoading(true);
     setError('');
     setPRs([]);
-
+    const token: string = process.env.GITHUB_TOKEN as string;
     try {
-      const data = await GitHubService.getOpenPullRequests(owner, repo);
+      const data =await GitHubService.fetchPRs(owner, repo, token); 
       setPRs(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');

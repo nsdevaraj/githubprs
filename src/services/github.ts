@@ -3,9 +3,13 @@ import type { PullRequest } from '../types';
 const GITHUB_API_BASE = 'https://api.github.com';
 
 export class GitHubService {
-  private static async fetchFromGitHub<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${GITHUB_API_BASE}${endpoint}`);
-    
+  private static async fetchFromGitHub<T>(endpoint: string, githubToken: string): Promise<T> {
+    const response = await fetch(`${GITHUB_API_BASE}${endpoint}`, {
+      headers: {
+        Authorization: `token ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    });
     if (!response.ok) {
       throw new Error(
         response.status === 404
@@ -17,7 +21,7 @@ export class GitHubService {
     return response.json();
   }
 
-  static async getOpenPullRequests(owner: string, repo: string): Promise<PullRequest[]> {
-    return this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls?state=open`);
-  }
+   static async fetchPRs(owner: string, repo: string, githubToken: string): Promise<PullRequest[]> {
+    return this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls`, githubToken);
+  } 
 }
