@@ -22,7 +22,7 @@ export class GitHubService {
   }
 
    static async fetchPRs(owner: string, repo: string, githubToken: string): Promise<PullRequest[]> {
-    const pullRequests = await this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls`, githubToken);
+    const pullRequests = await this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls?per_page=100`, githubToken);
     return pullRequests//.filter(pr => pr.base.ref === 'enterprise-donut');
   } 
 }
