@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { PRList } from './components/PRList';
 import { ErrorMessage } from './components/ErrorMessage';
@@ -20,7 +20,7 @@ function App() {
     setPRs([]);
     const token: string = process.env.GITHUB_TOKEN as string;
     try {
-      const data =await GitHubService.fetchPRs(owner, repo, token); 
+      const data = await GitHubService.fetchPRs(owner, repo, token);
       setPRs(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
@@ -51,7 +51,7 @@ function App() {
         />
 
         {error && <ErrorMessage message={error} />}
-        
+
         {isLoading ? (
           <LoadingSpinner />
         ) : (
