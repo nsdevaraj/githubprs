@@ -8,8 +8,8 @@ import { GitHubService } from './services/github';
 import type { PullRequest } from './types';
 
 function App() {
-  const [owner, setOwner] = useState('');
-  const [repo, setRepo] = useState('');
+  const [owner, setOwner] = useState('visualbis');
+  const [repo, setRepo] = useState('ibcslibrary');
   const [prs, setPRs] = useState<PullRequest[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -18,7 +18,7 @@ function App() {
     setIsLoading(true);
     setError('');
     setPRs([]);
-    const token: string = process.env.GITHUB_TOKEN as string;
+    const token: string = import.meta.env.VITE_GITHUB_TOKEN as string;
     try {
       const data = await GitHubService.fetchPRs(owner, repo, token);
       setPRs(data);
