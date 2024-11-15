@@ -1,4 +1,3 @@
-import React from 'react';
 import { ExternalLink, GitPullRequest, Clock, User } from 'lucide-react';
 import type { PullRequest } from '../types';
 
@@ -55,7 +54,7 @@ export function PRList({ pullRequests }: PRListProps) {
                     </span>
                     <span className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
-                      Created {formatDate(pr.created_at)}
+                      Created {formatDate(pr.created_at) + ' Branch ' + pr.base.ref}
                     </span>
                   </div>
                 </div>

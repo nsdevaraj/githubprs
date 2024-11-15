@@ -1,4 +1,5 @@
 export interface PullRequest {
+  base: any;
   id: number;
   number: number;
   title: string;
