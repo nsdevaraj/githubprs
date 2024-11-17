@@ -28,6 +28,7 @@ export default defineConfig(({ command, mode }) => {
         return prev;
       }, {}),
       preventAssignment: true,
+      'process.env': process.env,
     },
   };
 });
