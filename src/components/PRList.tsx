@@ -1,5 +1,6 @@
 import { ExternalLink, GitPullRequest, Clock, User } from 'lucide-react';
 import type { PullRequest } from '../types';
+import { saveReviewerAssignment } from '../utils/kv-store';
 
 interface PRListProps {
   pullRequests: PullRequest[];
@@ -13,6 +14,15 @@ const reviewers = [
 ];
 
 export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment }: PRListProps) {
+  const handleReviewerChange = async (prNumber: number, reviewer: string) => {
+    const saved = await saveReviewerAssignment(prNumber, reviewer);
+    if (saved) {
+      onReviewerAssignment(prNumber, reviewer);
+    } else {
+      console.error('Failed to save reviewer assignment');
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -83,9 +93,9 @@ export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment
             </div>
             <div className="flex items-center space-x-4">
               <select 
-                className="form-select rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 value={reviewerAssignments[pr.number] || ''}
-                onChange={(e) => onReviewerAssignment(pr.number, e.target.value)}
+                onChange={(e) => handleReviewerChange(pr.number, e.target.value)}
+                className="mt-2 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
               >
                 <option value="">Select Reviewer</option>
                 {reviewers.map((reviewer) => (
