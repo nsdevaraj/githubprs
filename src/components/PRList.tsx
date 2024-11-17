@@ -1,6 +1,7 @@
 import { ExternalLink, GitPullRequest, Clock, User } from 'lucide-react';
+import { useEffect } from 'react';
 import type { PullRequest } from '../types';
-import { saveReviewerAssignment } from '../utils/kv-store';
+import { saveReviewerAssignment, getAllReviewerAssignments } from '../utils/kv-store';
 
 interface PRListProps {
   pullRequests: PullRequest[];
@@ -14,9 +15,22 @@ const reviewers = [
 ];
 
 export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment }: PRListProps) {
+  useEffect(() => {
+    const loadStoredAssignments = async () => {
+      const stored = await getAllReviewerAssignments();
+      console.log('Loaded stored assignments:', stored);
+      Object.entries(stored).forEach(([prNumber, reviewer]) => {
+        onReviewerAssignment(Number(prNumber), reviewer);
+      });
+    };
+    loadStoredAssignments();
+  }, [onReviewerAssignment]);
+
   const handleReviewerChange = async (prNumber: number, reviewer: string) => {
+    console.log(`Attempting to save reviewer ${reviewer} for PR ${prNumber}`);
     const saved = await saveReviewerAssignment(prNumber, reviewer);
     if (saved) {
+      console.log('Successfully saved, updating UI');
       onReviewerAssignment(prNumber, reviewer);
     } else {
       console.error('Failed to save reviewer assignment');
