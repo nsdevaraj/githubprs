@@ -1,9 +1,10 @@
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
 //let process ={env: {KV_REST_API_URL: import.meta.env.KV_REST_API_URL!, KV_REST_API_TOKEN: import.meta.env.KV_REST_API_TOKEN!}};
-// const kv = createClient({
-//   url: "https://prime-egret-21091.upstash.io",
-//   token: "AVJjAAIjcDE3NzBjMGI2MTdkNjc0OWQ2OTliZWY3M2VkNjZlNjNkN3AxMA",
-// });
+const kv = createClient({
+  url: "https://prime-egret-21091.upstash.io",
+  token: "AVJjAAIjcDE3NzBjMGI2MTdkNjc0OWQ2OTliZWY3M2VkNjZlNjNkN3AxMA",
+  enableTelemetry: false,  
+});
 
 export async function saveReviewerAssignment(prNumber: number, reviewer: string) {
   try {
