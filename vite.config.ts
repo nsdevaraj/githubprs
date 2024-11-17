@@ -16,6 +16,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     plugins: [react()],
+    
     // vite config
     define: {
       ...Object.keys(env).reduce((prev, key) => {
@@ -25,6 +26,8 @@ export default defineConfig(({ command, mode }) => {
 
         return prev;
       }, {}),
+      preventAssignment: true,
     },
   };
 });
+

@@ -14,7 +14,7 @@ export default tseslint.config(
     },
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals:{ ...globals.node},
     },
     plugins: {
       "react-hooks": reactHooks,
@@ -28,4 +28,4 @@ export default tseslint.config(
       ],
     },
   }
-);
+); 
