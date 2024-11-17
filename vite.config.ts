@@ -1,17 +1,22 @@
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig, loadEnv } from 'vite'
+import react from '@vitejs/plugin-react-swc'
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+export default defineConfig(({ command, mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
+  const env = loadEnv(mode, process.cwd(), '')
+
   return {
     plugins: [react()],
-    optimizeDeps: {
-      exclude: ['lucide-react'],
-    },
+    // vite config
     define: {
-      'process.env.KV_REST_API_URL': JSON.stringify(env.KV_REST_API_URL),
-      'process.env.KV_REST_API_TOKEN': JSON.stringify(env.KV_REST_API_TOKEN),
+      ...Object.keys(env).reduce((prev, key) => {
+        const sanitizedKey = key.replace(/[^a-zA-Z0-9_]/g, "_");
+
+        prev[`process.env.${sanitizedKey}`] = JSON.stringify(env[key]);
+
+        return prev;
+      }, {}),
     },
-  };
-});
+  }
+})
