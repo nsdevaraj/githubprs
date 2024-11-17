@@ -1,8 +1,8 @@
 import { createClient } from '@vercel/kv';
 //let process ={env: {KV_REST_API_URL: import.meta.env.KV_REST_API_URL!, KV_REST_API_TOKEN: import.meta.env.KV_REST_API_TOKEN!}};
 const kv = createClient({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
+  url: "https://prime-egret-21091.upstash.io",
+  token: "AVJjAAIjcDE3NzBjMGI2MTdkNjc0OWQ2OTliZWY3M2VkNjZlNjNkN3AxMA",
 });
 
 export async function saveReviewerAssignment(prNumber: number, reviewer: string) {
