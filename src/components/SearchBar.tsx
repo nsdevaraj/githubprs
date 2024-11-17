@@ -4,20 +4,36 @@ import { Search } from 'lucide-react';
 interface SearchBarProps {
   owner: string;
   repo: string;
+  selectedReviewer: string;
   setOwner: (value: string) => void;
   setRepo: (value: string) => void;
+  setSelectedReviewer: (value: string) => void;
   onSearch: () => void;
   isLoading: boolean;
 }
 
-export function SearchBar({ owner, repo, setOwner, setRepo, onSearch, isLoading }: SearchBarProps) {
+const reviewers = [
+  'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish', 
+  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha'
+];
+
+export function SearchBar({ 
+  owner, 
+  repo, 
+  selectedReviewer,
+  setOwner, 
+  setRepo, 
+  setSelectedReviewer,
+  onSearch, 
+  isLoading 
+}: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto">
+    <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto">
       <div className="flex gap-4 p-4 bg-white rounded-lg shadow-lg">
         <div className="flex-1">
           <input
@@ -38,6 +54,20 @@ export function SearchBar({ owner, repo, setOwner, setRepo, onSearch, isLoading 
             className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
             required
           />
+        </div>
+        <div className="flex-1">
+          <select
+            value={selectedReviewer}
+            onChange={(e) => setSelectedReviewer(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+          >
+            <option value="">All Reviewers</option>
+            {reviewers.map((reviewer) => (
+              <option key={reviewer} value={reviewer}>
+                {reviewer}
+              </option>
+            ))}
+          </select>
         </div>
         <button
           type="submit"

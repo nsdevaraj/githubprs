@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { PRList } from './components/PRList';
 import { ErrorMessage } from './components/ErrorMessage';
@@ -11,6 +11,9 @@ function App() {
   const [owner, setOwner] = useState('visualbis');
   const [repo, setRepo] = useState('ibcslibrary');
   const [prs, setPRs] = useState<PullRequest[]>([]);
+  const [filteredPRs, setFilteredPRs] = useState<PullRequest[]>([]);
+  const [selectedReviewer, setSelectedReviewer] = useState('');
+  const [reviewerAssignments, setReviewerAssignments] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -18,16 +21,37 @@ function App() {
     setIsLoading(true);
     setError('');
     setPRs([]);
+    setFilteredPRs([]);
     const token: string = import.meta.env.VITE_GITHUB_TOKEN as string;
     try {
       const data = await GitHubService.fetchPRs(owner, repo, token);
       setPRs(data);
+      setFilteredPRs(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleReviewerAssignment = (prNumber: number, reviewer: string) => {
+    setReviewerAssignments(prev => ({
+      ...prev,
+      [prNumber]: reviewer
+    }));
+  };
+
+  useEffect(() => {
+    if (selectedReviewer && prs.length > 0) {
+      const filtered = prs.filter(pr => {
+        const assignedReviewer = reviewerAssignments[pr.number] || '';
+        return assignedReviewer === selectedReviewer;
+      });
+      setFilteredPRs(filtered);
+    } else {
+      setFilteredPRs(prs);
+    }
+  }, [selectedReviewer, prs, reviewerAssignments]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -44,8 +68,10 @@ function App() {
         <SearchBar
           owner={owner}
           repo={repo}
+          selectedReviewer={selectedReviewer}
           setOwner={setOwner}
           setRepo={setRepo}
+          setSelectedReviewer={setSelectedReviewer}
           onSearch={fetchPRs}
           isLoading={isLoading}
         />
@@ -55,12 +81,18 @@ function App() {
         {isLoading ? (
           <LoadingSpinner />
         ) : (
-          prs.length > 0 && <PRList pullRequests={prs} />
+          filteredPRs.length > 0 && (
+            <PRList 
+              pullRequests={filteredPRs}
+              reviewerAssignments={reviewerAssignments}
+              onReviewerAssignment={handleReviewerAssignment}
+            />
+          )
         )}
 
-        {!isLoading && !error && prs.length === 0 && owner && repo && (
+        {!isLoading && !error && filteredPRs.length === 0 && owner && repo && (
           <div className="text-center mt-8 text-gray-600">
-            No open pull requests found
+            {prs.length > 0 ? 'No pull requests found with selected reviewer' : 'No open pull requests found'}
           </div>
         )}
       </main>

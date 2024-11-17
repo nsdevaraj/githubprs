@@ -3,9 +3,16 @@ import type { PullRequest } from '../types';
 
 interface PRListProps {
   pullRequests: PullRequest[];
+  reviewerAssignments: Record<number, string>;
+  onReviewerAssignment: (prNumber: number, reviewer: string) => void;
 }
 
-export function PRList({ pullRequests }: PRListProps) {
+const reviewers = [
+  'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish', 
+  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha'
+];
+
+export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment }: PRListProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -59,6 +66,34 @@ export function PRList({ pullRequests }: PRListProps) {
                   </div>
                 </div>
               </div>
+              <div className="flex space-x-2">
+                {pr.labels.map((label) => (
+                  <span
+                    key={label.name}
+                    className="px-2 py-1 text-xs rounded-full"
+                    style={{
+                      backgroundColor: `#${label.color}`,
+                      color: parseInt(label.color, 16) > 0xffffff / 2 ? '#000' : '#fff',
+                    }}
+                  >
+                    {label.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <select 
+                className="form-select rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                value={reviewerAssignments[pr.number] || ''}
+                onChange={(e) => onReviewerAssignment(pr.number, e.target.value)}
+              >
+                <option value="">Select Reviewer</option>
+                {reviewers.map((reviewer) => (
+                  <option key={reviewer} value={reviewer}>
+                    {reviewer}
+                  </option>
+                ))}
+              </select>
               <div className="flex space-x-2">
                 {pr.labels.map((label) => (
                   <span
