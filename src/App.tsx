@@ -45,6 +45,9 @@ function App() {
     if (selectedReviewer && prs.length > 0) {
       const filtered = prs.filter(pr => {
         const assignedReviewer = reviewerAssignments[pr.number] || '';
+        if (selectedReviewer === 'unassigned') {
+          return assignedReviewer === '';
+        }
         return assignedReviewer === selectedReviewer;
       });
       setFilteredPRs(filtered);

@@ -13,19 +13,19 @@ interface SearchBarProps {
 }
 
 const reviewers = [
-  'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish', 
-  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha'
+  'unassigned', 'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish',
+  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha', 'Amit', 'Aiswarya', 'Shoaib'
 ];
 
-export function SearchBar({ 
-  owner, 
-  repo, 
+export function SearchBar({
+  owner,
+  repo,
   selectedReviewer,
-  setOwner, 
-  setRepo, 
+  setOwner,
+  setRepo,
   setSelectedReviewer,
-  onSearch, 
-  isLoading 
+  onSearch,
+  isLoading
 }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
