@@ -13,6 +13,8 @@ function App() {
   const [prs, setPRs] = useState<PullRequest[]>([]);
   const [filteredPRs, setFilteredPRs] = useState<PullRequest[]>([]);
   const [selectedReviewer, setSelectedReviewer] = useState('');
+  const [baseBranch, setBaseBranch] = useState('');
+  const [prAuthor, setPrAuthor] = useState('');
   const [reviewerAssignments, setReviewerAssignments] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -72,9 +74,13 @@ function App() {
           owner={owner}
           repo={repo}
           selectedReviewer={selectedReviewer}
+          baseBranch={baseBranch}
+          prAuthor={prAuthor}
           setOwner={setOwner}
           setRepo={setRepo}
           setSelectedReviewer={setSelectedReviewer}
+          setBaseBranch={setBaseBranch}
+          setPrAuthor={setPrAuthor}
           onSearch={fetchPRs}
           isLoading={isLoading}
         />

@@ -77,7 +77,7 @@ export function SearchBar({
             type="text"
             value={prAuthor}
             onChange={(e) => setPrAuthor(e.target.value)}
-            placeholder="PR Author"
+            placeholder="PR Author (e.g., habeeb)"
             className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
           />
         </div>
