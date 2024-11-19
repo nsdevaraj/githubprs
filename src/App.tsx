@@ -6,6 +6,7 @@ import { LoadingSpinner } from './components/LoadingSpinner';
 import { GithubIcon } from 'lucide-react';
 import { GitHubService } from './services/github';
 import type { PullRequest } from './types';
+import './styles/print.css';
 
 function App() {
   const [owner, setOwner] = useState('visualbis');

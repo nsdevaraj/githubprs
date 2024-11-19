@@ -1,0 +1,31 @@
+@media print {
+  /* Hide elements we don't want in the PDF */
+  button,
+  select,
+  .print:hidden {
+    display: none !important;
+  }
+
+  /* Adjust spacing and layout for print */
+  body {
+    padding: 20px;
+  }
+
+  /* Ensure text is readable */
+  * {
+    color: black !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Break pages appropriately */
+  .pr-item {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure links are visible */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+}
