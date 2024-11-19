@@ -44,19 +44,26 @@ function App() {
   };
 
   useEffect(() => {
-    if (selectedReviewer && prs.length > 0) {
+    if (prs.length > 0) {
       const filtered = prs.filter(pr => {
+        // Filter by reviewer
         const assignedReviewer = reviewerAssignments[pr.number] || '';
-        if (selectedReviewer === 'unassigned') {
-          return assignedReviewer === '';
-        }
-        return assignedReviewer === selectedReviewer;
+        const reviewerMatch = !selectedReviewer || 
+          (selectedReviewer === 'unassigned' ? assignedReviewer === '' : assignedReviewer === selectedReviewer);
+
+        // Filter by base branch
+        const baseMatch = !baseBranch || pr.base.ref.toLowerCase().includes(baseBranch.toLowerCase());
+
+        // Filter by PR author
+        const authorMatch = !prAuthor || pr.user.login.toLowerCase().includes(prAuthor.toLowerCase());
+
+        return reviewerMatch && baseMatch && authorMatch;
       });
       setFilteredPRs(filtered);
     } else {
-      setFilteredPRs(prs);
+      setFilteredPRs([]);
     }
-  }, [selectedReviewer, prs, reviewerAssignments]);
+  }, [selectedReviewer, baseBranch, prAuthor, prs, reviewerAssignments]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
