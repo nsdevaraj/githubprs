@@ -10,8 +10,8 @@ interface PRListProps {
 }
 
 const reviewers = [
-  'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish', 
-  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha'
+  'Habeeb', 'Jeff', 'Raghu', 'Praveen', 'Salman', 'Nithish',
+  'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha', 'Amit', 'Aiswarya', 'Shoaib'
 ];
 
 export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment }: PRListProps) {
@@ -111,7 +111,7 @@ export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <select 
+              <select
                 value={reviewerAssignments[pr.number] || ''}
                 onChange={(e) => handleReviewerChange(pr.number, e.target.value)}
                 className="mt-2 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
