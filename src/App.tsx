@@ -81,6 +81,12 @@ function App() {
 
         {error && <ErrorMessage message={error} />}
 
+        {!isLoading && prs.length > 0 && (
+          <div className="mt-4 text-gray-600">
+            Found {filteredPRs.length} {selectedReviewer ? `PR${filteredPRs.length !== 1 ? 's' : ''} ${selectedReviewer === 'unassigned' ? 'unassigned' : `assigned to ${selectedReviewer}`}` : `PR${prs.length !== 1 ? 's' : ''} total`}
+          </div>
+        )}
+
         {isLoading ? (
           <LoadingSpinner />
         ) : (
