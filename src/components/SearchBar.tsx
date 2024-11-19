@@ -5,9 +5,13 @@ interface SearchBarProps {
   owner: string;
   repo: string;
   selectedReviewer: string;
+  baseBranch: string;
+  prAuthor: string;
   setOwner: (value: string) => void;
   setRepo: (value: string) => void;
   setSelectedReviewer: (value: string) => void;
+  setBaseBranch: (value: string) => void;
+  setPrAuthor: (value: string) => void;
   onSearch: () => void;
   isLoading: boolean;
 }
@@ -21,9 +25,13 @@ export function SearchBar({
   owner,
   repo,
   selectedReviewer,
+  baseBranch,
+  prAuthor,
   setOwner,
   setRepo,
   setSelectedReviewer,
+  setBaseBranch,
+  setPrAuthor,
   onSearch,
   isLoading
 }: SearchBarProps) {
@@ -53,6 +61,24 @@ export function SearchBar({
             placeholder="Repository Name (e.g., react)"
             className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
             required
+          />
+        </div>
+        <div className="flex-1">
+          <input
+            type="text"
+            value={baseBranch}
+            onChange={(e) => setBaseBranch(e.target.value)}
+            placeholder="Base Branch (e.g., main)"
+            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+          />
+        </div>
+        <div className="flex-1">
+          <input
+            type="text"
+            value={prAuthor}
+            onChange={(e) => setPrAuthor(e.target.value)}
+            placeholder="PR Author"
+            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
           />
         </div>
         <div className="flex-1">

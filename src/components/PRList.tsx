@@ -7,6 +7,8 @@ interface PRListProps {
   pullRequests: PullRequest[];
   reviewerAssignments: Record<number, string>;
   onReviewerAssignment: (prNumber: number, reviewer: string) => void;
+  baseBranch: string;
+  prAuthor: string;
 }
 
 const reviewers = [
@@ -14,7 +16,7 @@ const reviewers = [
   'Soundarya', 'Vishnu', 'Nafil', 'Nithya', 'Pradha', 'Amit', 'Aiswarya', 'Shoaib'
 ];
 
-export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment }: PRListProps) {
+export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment, baseBranch, prAuthor }: PRListProps) {
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -50,9 +52,15 @@ export function PRList({ pullRequests, reviewerAssignments, onReviewerAssignment
     });
   };
 
+  const filteredPullRequests = pullRequests.filter(pr => {
+    const matchesBase = !baseBranch || pr.base.ref.toLowerCase().includes(baseBranch.toLowerCase());
+    const matchesAuthor = !prAuthor || pr.user.login.toLowerCase().includes(prAuthor.toLowerCase());
+    return matchesBase && matchesAuthor;
+  });
+
   return (
     <div className="mt-8 space-y-4">
-      {pullRequests.map((pr) => (
+      {filteredPullRequests.map((pr) => (
         <div
           key={pr.id}
           className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
