@@ -37,11 +37,19 @@ function App() {
     }
   };
 
-  const handleReviewerAssignment = (prNumber: number, reviewer: string) => {
-    setReviewerAssignments(prev => ({
-      ...prev,
-      [prNumber]: reviewer
-    }));
+  const handleReviewerAssignment = async (prNumber: number, reviewer: string) => {
+    const token: string = import.meta.env.VITE_GITHUB_TOKEN as string;
+    try {
+      if (reviewerAssignments[prNumber]) {
+        await GitHubService.removeAssignment(owner, repo, prNumber, reviewerAssignments[prNumber], token);
+      }
+      setReviewerAssignments(prev => ({
+        ...prev,
+        [prNumber]: reviewer
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update assignment');
+    }
   };
 
   useEffect(() => {

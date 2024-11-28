@@ -21,8 +21,26 @@ export class GitHubService {
     return response.json();
   }
 
-   static async fetchPRs(owner: string, repo: string, githubToken: string): Promise<PullRequest[]> {
-    const pullRequests = await this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls?per_page=100`, githubToken);
-    return pullRequests//.filter(pr => pr.base.ref === 'enterprise-donut');
-  } 
+  static async fetchPRs(owner: string, repo: string, githubToken: string): Promise<PullRequest[]> {
+    const pullRequests = await this.fetchFromGitHub<PullRequest[]>(`/repos/${owner}/${repo}/pulls?state=open&per_page=100`, githubToken);
+    return pullRequests;
+  }
+
+  static async removeAssignment(owner: string, repo: string, prNumber: number, assignee: string, githubToken: string): Promise<void> {
+    const response = await fetch(`${GITHUB_API_BASE}/repos/${owner}/${repo}/issues/${prNumber}/assignees`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `token ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        assignees: [assignee]
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to remove assignment: ${response.statusText}`);
+    }
+  }
 }
